@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: k8s-diy-validating-webhook
+  name: k8s-diy-validating-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k8s-diy-validating-webhook
+  template:
+    metadata:
+      labels:
+        app: k8s-diy-validating-webhook
+    spec:
+      containers:
+        - image: ghcr.io/dirien/k8s-diy-validating-webhook:latest
+          name: k8s-diy-validating-webhook
+          imagePullPolicy: Always
+          args:
+            - --port=8443
+            - --tls-cert=/etc/webhook/certs/tls.crt
+            - --tls-key=/etc/webhook/certs/tls.key
+          ports:
+            - containerPort: 8443
+              name: webhook
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/webhook/certs
+              name: certs
+      volumes:
+        - name: certs
+          secret:
+            secretName: k8s-diy-validating-webhook-certs

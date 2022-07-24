@@ -1,0 +1,14 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: ca-root
+spec:
+  secretName: ca-root
+  isCA: true
+  commonName: ca-root
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    kind: ClusterIssuer
+    name: ca-root-issuer

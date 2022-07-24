@@ -1,0 +1,26 @@
+kind: MutatingWebhookConfiguration
+apiVersion: admissionregistration.k8s.io/v1
+metadata:
+  name: set-resource-limits
+  annotations:
+    cert-manager.io/inject-ca-from: default/k8s-diy-mutating-webhook
+webhooks:
+  - name: set-resource-limits.ediri.io
+    clientConfig:
+      service:
+        namespace: default
+        name: k8s-diy-mutating-webhook
+        path: /mutate
+    rules:
+      - apiGroups:
+          - ""
+        apiVersions:
+          - "v1"
+        resources:
+          - "pods"
+        operations:
+          - "CREATE"
+        scope: Namespaced
+    sideEffects: None
+    admissionReviewVersions:
+      - "v1"

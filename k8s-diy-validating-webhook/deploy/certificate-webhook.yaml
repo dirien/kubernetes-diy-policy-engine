@@ -1,0 +1,20 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: k8s-diy-validating-webhook
+spec:
+  issuerRef:
+    name: ca-root
+    kind: ClusterIssuer
+  secretName: k8s-diy-validating-webhook-certs
+  duration: 2160h
+  renewBefore: 360h
+  dnsNames:
+    - k8s-diy-validating-webhook.default.svc
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  usages:
+    - client auth
+    - server auth
